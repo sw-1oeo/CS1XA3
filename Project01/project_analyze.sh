@@ -1,0 +1,27 @@
+#!/bin/bash
+
+printf "select your feature:\n1:Create a TODO Log\n2:Compile Error Log\n3:Merge Log\n4:file type count\n5:delete temporary files\n6:find last working file\n"
+printf "your option(pick the number):"
+read jin 
+if [ $jin = "1" ];then
+		grep --exclude=todo.log -r '#TODO' . > todo.log
+fi
+if [ $jin = "2" ];then
+	echo  not done yet, spared for part2
+fi
+if [ $jin = "3" ];then
+        echo not done yet, spared for part2 
+fi
+if [ $jin = "4" ];then
+        echo not done yet, spared for part2 
+fi
+if [ $jin = "5" ];then
+        echo not done yet, spared for part2 
+fi
+if [ $jin = "6" ];then
+        echo not done yet, spared for part2 
+fi
+
+
+
+
