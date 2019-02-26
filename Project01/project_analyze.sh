@@ -16,10 +16,10 @@ if [ $jin = "4" ];then
         echo not done yet, spared for part2 
 fi
 if [ $jin = "5" ];then
-        echo not done yet, spared for part2 
+        echo git ls-files --others --exclude-standard | grep -E .tmp | xargs rm 
 fi
 if [ $jin = "6" ];then
-        echo not done yet, spared for part2 
+        echo  hi 
 fi
 
 
