@@ -13,7 +13,23 @@ if [ $jin = "3" ];then
         sed 'y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/' *.txt > lowercase_txt.log
 fi
 if [ $jin = "4" ];then
-        echo not done yet, spared for part2 
+        count=$(find . -type f -name '*.html' -o -name '*.htm' | wc -l)
+	echo "HTML:$count"
+
+	count=$(find . -type f -name '*.js' | wc -l)
+	echo "Javascript:$count"
+
+	count=$(find . -type f -name '*.css' | wc -l)
+	echo "CSS:$count"
+
+	count=$(find . -type f -name '*.py' | wc -l)
+	echo "Python:$count"
+
+	count=$(find . -type f -name '*.hs' -o -name '*.lhs' | wc -l)
+	echo "Haskell:$count"
+
+	count=$(find . -type f -name '*.sh' | wc -l)
+	echo "Bashscript:$count" 
 fi
 if [ $jin = "5" ];then
         echo git ls-files --others --exclude-standard | grep -E .tmp | xargs rm 
