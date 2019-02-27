@@ -1,13 +1,13 @@
 #!/bin/bash
 
-printf "select your feature:\n1:Create a TODO Log\n2:Compile Error Log\n3:Custom Feature-change upper to lowercase in all txt files\n4:file type count\n5:delete temporary files\n"
+printf "select your feature:\n1:Create a TODO Log\n2:Custom Feature-error log for python files\n3:Custom Feature-change upper to lowercase in all txt files\n4:file type count\n5:delete temporary files\n"
 printf "your option(pick the number):"
 read jin 
 if [ $jin = "1" ];then
-		grep --exclude=todo.log -r '#TODO' . > todo.log
+	grep --exclude=todo.log -r '#TODO' . > todo.log
 fi
 if [ $jin = "2" ];then
-	echo  not done yet, spared for part2
+	python -m py_compile *.py 2> python_error.log
 fi
 if [ $jin = "3" ];then
         sed 'y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/' *.txt > lowercase_txt.log
