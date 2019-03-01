@@ -1,3 +1,3 @@
 import Html exposing (Html, text)
 
-main = text "Hello Elm World"
+main = test "Hello Elm World" 
