@@ -11,15 +11,13 @@ $.fn.mosGame = function(options){
 				$mos6 = $("#mos6");
 				$mos7 = $("#mos7");
 				$play = $("#play");
-				$scoreBox = $("#scoreBox > strong");
+				$scoreBox = $("#scoreBox> strong");
 				w = $box.width()-100;
 				h = $box.height()-120;
 				score = 0;
 			},
 			startTheMogi : function(){
 				$play.on("click", function(){
-					$play.fadeOut(100);
-					$play.addClass("btn_off");
 					basic.gameStart();
 					basic.clickMos();
 					$('audio#mogi')[0].play()
@@ -44,8 +42,8 @@ $.fn.mosGame = function(options){
 						"top":y2
 					});
 					$mos6.animate({
-						"left":x2,
-						"top":y2
+						"left":x6,
+						"top":y6
 					});
 				}, 800);
 				
