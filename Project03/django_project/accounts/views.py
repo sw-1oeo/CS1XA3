@@ -20,19 +20,22 @@ def login_user_view(request):
 
     status_code = 401
     message = "Login failed"
+    response_data = {'message': message}
     if user is not None:
-        login(request,user)
+        login(request, user)
         status_code = 200
-        message = "Logged in"
+        response_data['message'] = "Logged in"
+        response_data['user_id'] = user.id
         
-    return JsonResponse({'message': message}, status=status_code)
+    return JsonResponse(response_data, status=status_code)
 
 
 def logout_user_view(request):
-  logout(request)
-  status_code = 200
-  message = "Logged out"
-  return JsonResponse({'message': message}, status=status_code)
+    print('request.user', request.user)
+    logout(request)
+    status_code = 200
+    message = "Logged out"
+    return JsonResponse({'message': message}, status=status_code)
 
 
 def register_user_view(request):
@@ -56,4 +59,27 @@ def register_user_view(request):
 
             status_code = 201
             message = "User created"
+    return JsonResponse({'message': message}, status=status_code)
+
+
+def score_user_view(request):
+    json_data=json.loads(request.body)
+
+    score = json_data.get('score')
+    userId = json_data.get('userId')
+        
+    status_code = 400
+    message = "Unable to update score"
+
+    user = User.objects.filter(id=userId).first()
+    
+    if user:
+        status_code = 200
+        if score > user.userprofile.max_score:
+            user.userprofile.max_score = score
+            user.userprofile.save()
+            message = "New max score updated"
+        else:
+            message = "New score not higher than previous max"
+
     return JsonResponse({'message': message}, status=status_code)
