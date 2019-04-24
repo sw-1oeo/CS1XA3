@@ -62,6 +62,15 @@ def register_user_view(request):
     return JsonResponse({'message': message}, status=status_code)
 
 
+def high_scores_view(request):
+    query_set = UserProfile.objects.filter(max_score__gt=0).order_by('-max_score')
+    print(query_set)
+    high_scores = []
+    for user_profile in query_set:
+        high_scores.append({"username": user_profile.user.username, "max_score":user_profile.max_score})
+    return JsonResponse({'highscores': high_scores})
+
+
 def score_user_view(request):
     json_data=json.loads(request.body)
 
