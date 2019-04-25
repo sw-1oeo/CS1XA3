@@ -63,7 +63,6 @@ def register_user_view(request):
 def high_scores_view(request):
     #get query_set which has username and max_score in a descending order
     query_set = UserProfile.objects.filter(max_score__gt=0).order_by('-max_score')
-    print(query_set)
     high_scores = []
     #iterate over query_set and append new queryset with max_score and username
     for user_profile in query_set:

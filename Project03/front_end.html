@@ -54,11 +54,27 @@
 			serverCall('logout', "POST", {} ,logoutCallback);
 		});
 
-		// TODO add section to get high scores
+		// Get high scores
 		var highScores = document.getElementById("high_scores");
 		highScores.addEventListener("click", function(event) {
-			alert('joe  3\njane 2');
+			highScoreCallback = function(http_status, data) {
+				// Check that max score is successfully retrieved from the server 
+				if (http_status == 200) {
+					var highScores = data.highscores;
+					//put username & max score data as a string and add related data by for loop
+					var alertString = 'username \t max score \n';
+					for (var i=0; i < highScores.length; i++) {
+						var item = highScores[i];
+						alertString += item.username + " \t " + item.max_score + " \n";
+					}
+					alert(alertString);
+				}
+			}
+			// Make API call to retrieve high score
+			serverCall('high_score', "GET", {} ,highScoreCallback);
+			 
 		});
+ 
 
 		/* Game code */
 		var ctx = document.getElementById('ctx').getContext('2d');

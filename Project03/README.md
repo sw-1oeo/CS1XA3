@@ -6,14 +6,15 @@ ssh <username>@mac1xa3.ca
 source /home/sunwooj/CS1XA3/Project03_env/bin/activate
 cd /home/sunwooj/CS1XA3/Project03/django_project/
 
-# Run Django server
+### Run Django server
 python3 manage.py runserver localhost:10053
 
-# Access Django admin 
+### Access Django admin 
 https://mac1xa3.ca/e/sunwooj/admin/
 
-# URL to game login page
-< url here >
+### Play game
+https://mac1xa3.ca/u/sunwooj/project3.html
+
 Explain that the user needs to register and then log in so they can play
 How to play the game
 
