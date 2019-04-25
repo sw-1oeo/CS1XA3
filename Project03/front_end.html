@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tom & Jerry</title>
+	<style type="text/css">
+		#canvas {
+			width: 600px;
+			height: 500px;
+			padding: 0;
+			display: block;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			margin: auto; 
+		}
+
+		body {
+			background-image: url(images/indexpage_background.jpg);
+			height: 100vh;
+			background-size: cover;
+			background-position: center;
+		}
+	</style>
+</head>
+<body>
+	<a href="#" id="logout_link">Logout</a>
+	<a href="#" id="high_scores">See High Scores</a>
+	<div id="canvas">
+		<canvas width="600" height="500" style="border: 1px solid black" id="ctx"></canvas>
+	</div> 
+	<script src="jerry.js"></script>
+	<script type="text/javascript">
+
+		var userId = localStorage.getItem('user_id');
+
+		/* UI code */
+
+		// Hook up event listener to logout link
+		var logout = document.getElementById("logout_link");
+		logout.addEventListener("click", function(event) {
+
+			logoutCallback = function(http_status, data) {
+				// Check that user has been successfully logged out
+				if (http_status == 200) {
+					// Clear their user_id
+					localStorage.removeItem('user_id');
+					// Send the user back to the login page
+					window.location.href = 'project3.html';
+				}
+			}
+			// Make API call to log out user
+			serverCall('logout', "POST", {} ,logoutCallback);
+		});
+
+		// TODO add section to get high scores
+		var highScores = document.getElementById("high_scores");
+		highScores.addEventListener("click", function(event) {
+			alert('joe  3\njane 2');
+		});
+
+		/* Game code */
+		var ctx = document.getElementById('ctx').getContext('2d');
+		var jerry = new Image();
+		var background = new Image();
+		var tom = new Image();
+		var cheese = new Image();
+
+		var score = 0;
+		var tomTimer = 0;
+		var cheeseTimer = 0;
+		var Timer = 0;
+		var gameover = false;
+		var intervalVar;
+		var tomList = [];
+		var cheeseList = [];
+		 
+		var tomLocate = [0,50,100,150,200,250,300,350,400,450,500,550];
+		var cheeseLocate = [0,50,100,150,200,250,300,350,400,450,500,550];
+
+		var jerryMouse = {
+			'x':300,
+			'y':200,
+			'width':60,
+			'height':60,		
+			'left':false,
+			'right':false,
+			'up':false,
+			'down':false,
+		};
+
+		var tomCat = {
+			'height':60,
+			'width':60,
+			'vel':5
+		};
+
+		var cheeseObject = {
+			'height':50,
+			'width':50,
+			 
+		};
+		// onload images which are needed for the game
+		background.onload = function() {
+			jerry.onload = function() {
+				tom.onload = function() {
+					cheese.onload = function() {
+					// onkeydown function to move jerryMouse with 4 arrow keys, making sure it is not moving outside the game box
+					document.onkeydown = function(event) {
+						if (event.keyCode == 37 && jerryMouse.x > 0) {							 
+							jerryMouse.left = true;
+						}
+						if (event.keyCode == 39 && jerryMouse.x < 540) {							
+							jerryMouse.right = true;
+						}
+						if (event.keyCode == 38 && jerryMouse.y >0) {							 
+							jerryMouse.up = true;
+						}
+						if (event.keyCode == 40 && jerryMouse.y < 440) {							 
+							jerryMouse.down = true;
+						}
+					}
+					// as onkey-upped, jerryMouse should not move anymore
+					document.onkeyup = function(event) {
+						if (event.keyCode == 37) {
+							jerryMouse.left = false;
+						}
+						if (event.keyCode == 39) {
+							jerryMouse.right = false;
+						}
+						if (event.keyCode == 38) {
+							jerryMouse.up = false;
+						}
+						if (event.keyCode == 40) {
+							jerryMouse.down = false;
+						}
+					}
+					// this function draws Jerry, Tom, and Cheese
+					drawCharacter = function(character,x,y,width,height) {
+						ctx.drawImage(character,x,y,width,height);
+					}
+					// initial variables when starting the game
+					startGame = function() {
+						score = 0;
+						jerryMouse.y = 300;
+						jerryMouse.x = 200;
+						jerryMouse.left = false;
+						jerryMouse.right = false;
+						jerryMouse.up = false;
+						jerryMouse.down = false;
+						tomTimer = 0;
+						cheeseTimer = 0;
+						Timer = 0;
+						gameover = false;
+						tomList = [];
+						cheeseList = [];
+						intervalVar = setInterval(updateOverall,10); 
+					}
+					
+					startGame();										
+					}
+					// when jerryMouse.l/r/u/d is true within the given range, jerryMouse moves 
+					jerryMouseMove = function() {
+						if (jerryMouse.left && jerryMouse.x > 0) {
+							jerryMouse.x -= 10
+						}
+						if (jerryMouse.right && jerryMouse.x < 540) {
+							jerryMouse.x += 10
+						}
+						if (jerryMouse.up && jerryMouse.y >0) {
+							jerryMouse.y -= 10
+						}
+						if (jerryMouse.down && jerryMouse.y < 440) {
+							jerryMouse.y += 10
+						}
+					}
+					
+					movingTom = function() {
+						// one of toms from 12 different y positions
+						for(var i in tomList) {
+							// if that tom gets to the right end of the game box, gets rid of it
+							if (tomList[i].x > 600) { 
+								tomList.splice(i,1);
+							}
+							// else, moves according to its velocity
+							else {
+								tomList[i].x += tomCat.vel;
+							}
+						}
+					}
+									
+					spliceCheese = function() {
+						for(var i in cheeseList) {
+							if (Timer>150) { 
+								cheeseList.splice(i,1);
+									Timer=0;
+							}
+								
+						}
+					}
+								
+					updateOverall = function() {
+						ctx.clearRect(0,0,600,500);
+						ctx.drawImage(background,0,0,600,500);
+						drawCharacter(jerry,jerryMouse.x,jerryMouse.y,60,60);
+						Timer++;
+						tomTimer++;
+						if (tomTimer>100){
+							tomList.push({'x':0,'y':tomLocate[Math.round(Math.random()*11)]});
+								tomTimer = 0;
+						}
+						for (var i in tomList) {
+							drawCharacter(tom,tomList[i].x,tomList[i].y,tomCat.width,tomCat.height);
+						}
+						cheeseTimer++;
+						if (cheeseTimer>100){
+							cheeseList.push({'x':cheeseLocate[Math.round(Math.random()*11)],'y':cheeseLocate[Math.round(Math.random()*11)]});
+								cheeseTimer = 0;
+						}
+						for (var i in cheeseList) {
+							drawCharacter(cheese,cheeseList[i].x,cheeseList[i].y,cheeseObject.width,cheeseObject.height);
+						}
+						// whenever cheese & jerry collide, 1 score up and splice the cheese
+						for (var i in cheeseList) {
+							if (cheese_jerryMouse_collision(cheeseList[i])) {
+								score++;
+								cheeseList.splice(i,1);
+							}
+						}
+						// when tom & jerry collide, it will eventually call out game over function
+						for (var i in tomList) {
+							if (tom_jerryMouse_collision(tomList[i])) {
+								gameover = true;
+							
+							}
+						}
+						if (gameover) {
+							gameOver();
+						}
+						ctx.fillStyle = "#000000";
+						ctx.font = "30px Arial";
+						ctx.fillText("Score  "+ score,460,40);
+						movingTom();
+						spliceCheese();
+						jerryMouseMove();
+					}
+					// when cheese & jerry collide considering all four sides(u/d/l/r)
+					cheese_jerryMouse_collision = function(c) {
+						return ((c.x < jerryMouse.x + 60) &&
+								(c.y < jerryMouse.y + 60) &&
+								(jerryMouse.x < c.x + 50) &&
+								(jerryMouse.y < c.y + 50));
+					}
+					// when tom & jerry collide considering all four sides(u/d/l/r)
+					tom_jerryMouse_collision = function(t) {
+						return ((t.x < jerryMouse.x + 60) &&
+								(t.y < jerryMouse.y + 60) &&
+								(jerryMouse.x < t.x + 60) &&
+								(jerryMouse.y < t.y + 60));
+					}
+
+					scoreCallback = function(http_status, data) {
+					}
+
+					update_score = function() {
+						//scoreData has userId of the current logged in user for identification, and score they get from each game
+						var scoreData = {
+							userId: userId, 
+							score: score
+						};
+						// Make API call to update score when the game is over
+						serverCall('score', "POST", scoreData, scoreCallback);
+					}
+					// when game is over, the game page stops with "game over" message, and call update_score function before clearing the interval
+					gameOver = function() {
+						ctx.save();
+						ctx.strokeStyle = "#000000";
+						ctx.font = "70px Arial"
+						ctx.fillText("Game Over", 130, 260); 
+						ctx.restore();
+						update_score();
+						clearInterval(intervalVar);
+						
+					}
+					cheese.src = "images/cheese.png";
+				}
+				tom.src = "images/tom.png";
+			}
+			jerry.src = "images/jerry.png";
+		}
+		background.src = "images/floor.jpg";
+	</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<html>
+<head>
+<title>Login & Registration</title>
+    <link rel="stylesheet" href="login_style.css">
+</head>
+<body>
+    <div class="login-page">
+    <div class="form">
+        <form class="login-form">
+            <input id="login_username" type="text" placeholder="user name" required />    
+            <input id="login_password" type="password" placeholder="password" required />
+            <button type="submit">Login</button>    
+
+            <p class="message">Not a user yet? <a href="#"> Click here to register</a>
+            </p>
+        </form>
+
+        <form class="creation-form">
+            <input id="creation_username" type="text" placeholder="user name"/>
+            <input id="creation_password" type="password" placeholder="password"/>
+            <input id="creation_confirm_password" type="password" placeholder="confirm password"/>
+            <button>Register</button>
+
+            <p class="message">Want to login? <a href="#" id="login_link"> Click here to login</a></p>
+        </form>
+
+        <p id="message"></p>
+    </div>     
+    </div>
+    <script src='https://code.jquery.com/jquery-3.4.0.min.js'></script>
+    <script src="jerry.js"></script>
+    
+    <script>
+    //toggle show/hide onclick, so upon clicking message, it shows creation part which was hidden and vise versa
+    $('.message a').click(function(){
+        $('form').animate({height:"toggle",opacity:"toggle"}, "slow");    
+    });
+
+    var loginCallback = function(http_status, data) {
+        // check that user has been successfully logged in
+        if (http_status == 200) {
+            // Here, you know the login succeeded
+            localStorage.setItem('user_id', data['user_id']);
+            // send the user to game page from login page
+            window.location.href = 'front_end.html';
+          //show login fail message
+        } else {
+            $('#message').html(data['message']);
+        }
+    };
+
+    var creationCallback = function(http_status, data) {
+        // check that new user has been successfully created
+        if (http_status == 201) {
+            // Here, you know the creation succeeded
+            $('#login_link').click();
+          // show password do not match message
+        } else {
+            $('#message').html(data['message']);
+        }
+    };
+
+    $('.login-form').submit(function() {
+        $('#message').html('');
+        var loginData = {
+            username: $('#login_username').val(),
+            password: $('#login_password').val()
+        };
+        // Make API call to login user
+        serverCall('login', "POST", loginData, loginCallback);
+        return false;
+    });
+    
+    $('.creation-form').submit(function() {
+        $('#message').html('');
+        var creationData = {
+            username: $('#creation_username').val(),
+            password: $('#creation_password').val(),
+            confirm_password: $('#creation_confirm_password').val(),
+        };
+        // Make API call to create user
+        serverCall('user', "POST", creationData, creationCallback);
+        return false;
+    });
+    </script>    
+</body>
+</html>
