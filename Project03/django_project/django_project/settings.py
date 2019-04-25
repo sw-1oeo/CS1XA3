@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'bsev^$hy#(-(*s^k_di19yp-61d3g*8mkn5s$%6-dh7qd#i9fq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True 
 
 ALLOWED_HOSTS = []
 
@@ -123,3 +123,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/e/sunwooj/static/'
+    # url to automatically access static files from
+STATICFILES_DIRS = [
+    "/home/sunwooj/CS1XA3/public_html/",
+    # paths to collect static files from
+]
+STATIC_ROOT = "/home/sunwooj/CS1XA3/django_project/static/"
+    # directory to store static files after colleted 
