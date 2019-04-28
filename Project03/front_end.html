@@ -21,6 +21,8 @@
 			height: 100vh;
 			background-size: cover;
 			background-position: center;
+			overflow-y: hidden;  
+			overflow-x: hidden;  
 		}
 	</style>
 </head>
@@ -32,7 +34,7 @@
 	</div> 
 	<script src="project3/jerry.js"></script>
 	<script type="text/javascript">
-
+        
 		var userId = localStorage.getItem('user_id');
 
 		/* UI code */
@@ -91,13 +93,12 @@
 		var intervalVar;
 		var tomList = [];
 		var cheeseList = [];
-		 
-		var tomLocate = [0,50,100,150,200,250,300,350,400,450,500,550];
-		var cheeseLocate = [0,50,100,150,200,250,300,350,400,450,500,550];
+		var tomLocate = [0,50,100,150,200,250,300,350,400];
+		var cheeseLocate = [0,50,100,150,200,250,300,350,400];
 
 		var jerryMouse = {
-			'x':300,
-			'y':200,
+			'x':100,
+			'y':500,
 			'width':60,
 			'height':60,		
 			'left':false,
@@ -117,7 +118,8 @@
 			'width':50,
 			 
 		};
-		// onload images which are needed for the game
+
+		// onload images used for the game
 		background.onload = function() {
 			jerry.onload = function() {
 				tom.onload = function() {
@@ -137,7 +139,7 @@
 							jerryMouse.down = true;
 						}
 					}
-					// as onkey-upped, jerryMouse should not move anymore
+					// when the keyboard-button is unpressed, jerryMouse should not move
 					document.onkeyup = function(event) {
 						if (event.keyCode == 37) {
 							jerryMouse.left = false;
@@ -152,7 +154,7 @@
 							jerryMouse.down = false;
 						}
 					}
-					// this function draws Jerry, Tom, and Cheese
+					// this function draws Jerry, Tom, and Cheese with object, position, size info
 					drawCharacter = function(character,x,y,width,height) {
 						ctx.drawImage(character,x,y,width,height);
 					}
@@ -171,11 +173,13 @@
 						gameover = false;
 						tomList = [];
 						cheeseList = [];
+						// calling updateOverall func every 0.01s before clearInterval is called
 						intervalVar = setInterval(updateOverall,10); 
 					}
 					
 					startGame();										
 					}
+
 					// when jerryMouse.l/r/u/d is true within the given range, jerryMouse moves 
 					jerryMouseMove = function() {
 						if (jerryMouse.left && jerryMouse.x > 0) {
@@ -205,7 +209,7 @@
 							}
 						}
 					}
-									
+				    // every 0.15s, get rid of cheese			
 					spliceCheese = function() {
 						for(var i in cheeseList) {
 							if (Timer>150) { 
@@ -221,19 +225,26 @@
 						ctx.drawImage(background,0,0,600,500);
 						drawCharacter(jerry,jerryMouse.x,jerryMouse.y,60,60);
 						Timer++;
+						// tomTimer gets +1 every 0.01s as the updateOverall func is called
 						tomTimer++;
+						// Math.random() for any number btw 0~1, time 8 each val, and use Math.round to get integer btw 0~8(index for list)
+						// as tomTimer gets greater than 100, add specific x, y value into tomList
+						// makes tomTimer 0, right after, so that it only happens every 0.1s
 						if (tomTimer>100){
-							tomList.push({'x':0,'y':tomLocate[Math.round(Math.random()*11)]});
+							tomList.push({'x':0,'y':tomLocate[Math.round(Math.random()*8)]});
 								tomTimer = 0;
 						}
+						// draws tom every interval
 						for (var i in tomList) {
 							drawCharacter(tom,tomList[i].x,tomList[i].y,tomCat.width,tomCat.height);
 						}
+						// this time, cheeseList have random value from cheeseLocate for both x and y
 						cheeseTimer++;
 						if (cheeseTimer>100){
-							cheeseList.push({'x':cheeseLocate[Math.round(Math.random()*11)],'y':cheeseLocate[Math.round(Math.random()*11)]});
+							cheeseList.push({'x':cheeseLocate[Math.round(Math.random()*8)],'y':cheeseLocate[Math.round(Math.random()*8)]});
 								cheeseTimer = 0;
 						}
+						// draws cheese every interval
 						for (var i in cheeseList) {
 							drawCharacter(cheese,cheeseList[i].x,cheeseList[i].y,cheeseObject.width,cheeseObject.height);
 						}
@@ -280,7 +291,7 @@
 					}
 
 					update_score = function() {
-						//scoreData has userId of the current logged in user for identification, and score they get from each game
+						// scoreData has userId of the current logged in user for identification, and score they get from each game
 						var scoreData = {
 							userId: userId, 
 							score: score
@@ -296,6 +307,7 @@
 						ctx.fillText("Game Over", 130, 260); 
 						ctx.restore();
 						update_score();
+						// setInterval ends, since the game is over
 						clearInterval(intervalVar);
 						
 					}

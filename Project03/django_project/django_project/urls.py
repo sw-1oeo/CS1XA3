@@ -17,15 +17,8 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    #path('admin/', admin.site.urls),
-    #path('e/sunwooj/', include([
-    #    path('admin/', admin.site.urls),
-    #]),
     path('e/sunwooj/admin/', admin.site.urls),
     path('e/sunwooj/' , include('accounts.urls')) ,
 ]
 
-#urlpatterns = [
-    #path('e/sunwooj/' , include('accounts.urls')) ,
-#]
 
