@@ -1,7 +1,7 @@
 # Project03: Tom & Jerry game with Django
 
 ## Run on Server
-Use your macid to ssh into the server, activate virtual environment, and cd into django_project.
+Use your macid to ssh into the server, activate virtual environment, and change directory into django_project.
 
     ssh <macid>@mac1xa3.ca
     source /home/sunwooj/CS1XA3/Project03_env/bin/activate
@@ -63,7 +63,7 @@ When the username and password match with the existing user, gets {"message": "L
 
 
 ## Log-out Feature
-There is no any parameter. Just http request sent to server for log out to be functioning. Once requested, gets {"message": "Logged out"}, and curl command reveives a Http resonse 200, meaning okay. 
+There is no any parameter. Just http request sent to server for log out to be functioning. Once requested, gets {"message": "Logged out"}, and curl command reveives a Http response of 200, meaning okay. 
 
 ### Curl command example:
 
@@ -104,10 +104,10 @@ Javascript is mainly used for the client side.
 
 * setInterval, clearInterval: Used setInterval to call the game function in every 0.01s as a frame, and clearInterval is used to end the game.
 
-* Animation (getting rid of tom and cheese): Used list.splice function in js, to remove current item from an array, so that tom or cheese can be got rid of from the game page when it gets to the right end of the game box or when it is collided by Jerry.
+* Animation (getting rid of tom and cheese): Used list.splice function in js, to remove current item from an array, so that tom or cheese can be got rid of from the game page when Tom gets to the right end of the game box or when Cheese is collided by Jerry.
 
-* Collision detection: Set the condition for two objects that are overlapped which mean they collide as collision status, to implement it when Jerry eats Cheese or when Jerry caught by Tom.
+* Collision detection: Set the condition for two objects that are overlapped which means they collide. Used this collision status for situation when Jerry eats Cheese or Jerry caught by Tom.
 
 * Animation (toggle between login page and creation page): Used Jquery .animation and toggle to hide creation form and then change it to visible mode when it is clicked.
 
-* Using the serverCall function from jerry.js, made API call to the Django server. Used this function to make API call to login user, create user, logout user, update the score, and get the max score of all other users. To describe more in detail, this function has four parameters which are path, method, requestData, and callback. Path is the url path after /accounts/, so for /accounts/login, should put login there. For method, it is for HTTP method so it is either choose POST or GET. The requesdData is Data to be passed to server. For last, callback function will be called whenever request is completed. So using this function, made API call, parsed JSON data from response, and made a JSON request to the server. 
+* Using the serverCall function from jerry.js, made API call to the Django server. Used this function to make API call to login user, create user, logout user, update the score, and get the max score of all other users. To describe more in detail, this function has four parameters which are path, method, requestData, and callback. Path is the url path after /accounts/, so for /accounts/login, login should be passed in. The method parameter is for HTTP method. So it is either GET or POST. The requesdData is Data to be passed to server. For last, callback function will be called whenever request is completed. So using this function, API call can be made, JSON data can be parsed from response, and JSON request can be made to the server. 
