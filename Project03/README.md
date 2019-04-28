@@ -98,7 +98,7 @@ You need a valid USER_ID based on an earlier request that created a user. POST i
 
 Javascript is mainly used for the client side. 
 
-*Keyboard event: Used onkeydown & onkeyup event to move object in four directions within the specified condition and range, using Boolean function. 
+* Keyboard event: Used onkeydown & onkeyup event to move object in four directions within the specified condition and range, using Boolean function. 
 
 * Random number: To draw an object in a different x or y position randomly, Math.random() was used to get any number between 0~1, and then implemented this to get random index from the List with x or y position elements.
 
