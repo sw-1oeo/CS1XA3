@@ -24,11 +24,28 @@
 			overflow-y: hidden;  
 			overflow-x: hidden;  
 		}
+		 
+		.button {
+			background-color: #e7e7e7; /*gray*/
+			border: none;
+			color: black;
+			padding: 15px 32px;
+			position: absolute;
+			top: 700px;
+			left: 670px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+		}
 	</style>
 </head>
 <body>
 	<a href="#" id="logout_link">Logout</a>
 	<a href="#" id="high_scores">See High Scores</a>
+	<button class="button" onClick="window.location.reload();">Restart</button>
 	<div id="canvas">
 		<canvas width="600" height="500" style="border: 1px solid black" id="ctx"></canvas>
 	</div> 
@@ -64,10 +81,10 @@
 				if (http_status == 200) {
 					var highScores = data.highscores;
 					//put username & max score data as a string and add related data by for loop
-					var alertString = 'username \t max score \n';
+					var alertString = 'Username - Max score \n';
 					for (var i=0; i < highScores.length; i++) {
 						var item = highScores[i];
-						alertString += item.username + " \t " + item.max_score + " \n";
+						alertString += item.username + " \t "+"-"+" \t " + item.max_score + " \n";
 					}
 					alert(alertString);
 				}
